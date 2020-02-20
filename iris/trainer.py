@@ -1,5 +1,5 @@
 '''
-This is a minimalistic Iris flower classifier.
+This is a minimalistic Iris flower classifier trainer.
 '''
 import os
 from typing import List
