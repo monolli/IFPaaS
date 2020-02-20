@@ -8,9 +8,17 @@ python:
 install:
     - pip install -r requirements.txt --upgrade pip
 # Command to run tests
-script:
-    - python -m flake8
-    - python -m pytest
+jobs:
+    include:
+        # Name of the first stage
+        - stage: "Tests"
+          # Name of the first job
+          name: "Linting"
+          script: python -m flake8
+          # Definition of the second job
+        - script: python -m pytest
+          name: "Unit Tests"
 branches:
     only:
         - master
+        - development
