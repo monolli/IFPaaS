@@ -22,7 +22,6 @@ jobs:
         - docker pull $DOCKER_USERNAME/ifpass || true
     script:
         - docker build --pull --cache-from $DOCKER_USERNAME/ifpass --tag $DOCKER_USERNAME/ifpass .
-        - docker run -p 8000:8000 --rm $DOCKER_USERNAME/ifpass
     after_script:
         - docker images
 
