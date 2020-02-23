@@ -4,10 +4,7 @@ python:
     - "3.6"
     - "3.7"
     - "3.8"
-# Command to install dependencies
-install:
-    - pip install -r requirements.txt --upgrade pip
-# Command to run tests
+install: pip install -r requirements.txt --upgrade pip
 script:
     - python -m flake8
     - python -m pytest
@@ -15,3 +12,25 @@ branches:
     only:
         - master
         - development
+jobs:
+  include:
+    python: "3.8"
+    services:
+        - docker
+    install: []
+    before_script:
+        - docker pull $DOCKER_USERNAME/ifpass || true
+    script:
+        - docker build --pull --cache-from $DOCKER_USERNAME/ifpass --tag $DOCKER_USERNAME/ifpass .
+    after_script:
+        - docker images
+
+
+    before_deploy:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    deploy:
+      provider: script
+      script: docker push $DOCKER_USERNAME/ifpass
+      on:
+        branch: master
+        python: "3.8"
