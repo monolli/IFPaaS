@@ -17,7 +17,7 @@ jobs:
     python: "3.8"
     services:
         - docker
-    install: []
+    install: pip install awscli -- upgrade pip
     before_script:
         - docker pull $DOCKER_USERNAME/ifpass || true
     script:
