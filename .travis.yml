@@ -3,7 +3,6 @@ python:
     - "3.5"
     - "3.6"
     - "3.7"
-    - "3.8"
 install: pip install -r requirements.txt --upgrade pip
 script:
     - python -m flake8
@@ -17,20 +16,20 @@ jobs:
     python: "3.8"
     services:
         - docker
-    install: []
+    install: pip install -r requirements.txt --upgrade pip
     before_script:
         - docker pull $DOCKER_USERNAME/ifpass || true
     script:
+        - python -m flake8
+        - python -m pytest
         - docker build --pull --cache-from $DOCKER_USERNAME/ifpass --tag $DOCKER_USERNAME/ifpass .
     after_script:
         - docker images
-
-
     before_deploy:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker push $DOCKER_USERNAME/ifpass
     deploy:
       provider: script
-      script: docker push $DOCKER_USERNAME/ifpass
+      script: bash deploy.sh
       on:
         branch: master
-        python: "3.8"
