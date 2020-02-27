@@ -27,11 +27,11 @@ jobs:
         - docker images
     before_deploy:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker push $DOCKER_USERNAME/ifpass
     deploy:
       provider: script
-      script: docker push $DOCKER_USERNAME/ifpass
-          - aws cloudformation deploy --stack-name=ifpass --template-file=aws/public_vpc.yml --capabilities=CAPABILITY_IAM
-          - aws cloudformation deploy --stack-name=ifpass --template-file=aws/public_service.yml --capabilities=CAPABILITY_IAM
-          - aws cloudformation describe-stacks --stack-name production | grep elb.amazonaws.com
+      script: aws cloudformation deploy --stack-name=ifpass --template-file=aws/public_vpc.yml --capabilities=CAPABILITY_IAM && \
+              aws cloudformation deploy --stack-name=ifpass --template-file=aws/public_service.yml --capabilities=CAPABILITY_IAM && \
+              aws cloudformation describe-stacks --stack-name production | grep elb.amazonaws.com
       on:
         branch: master
