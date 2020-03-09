@@ -65,6 +65,11 @@ You can send requests to the API using the "Try it out" button inside the docume
 curl -X POST "http://0.0.0.0:8000/classify_iris/multiple" -H  "accept: application/json" -H  "Content-Type: application/json" -d "{\"data\": [[4.8,3.4,1.6,0.2],[6.5,3.2,5.1,2]]}"
 ```
 
+You can expect to receive a JSON with the class of the given objects, example:
+```sh
+{"iris":["setosa","virginica"]}
+```
+
 ## Author
 
 * **Lucas Monteiro de Oliveira**- [Monolli](https://github.com/monolli)
